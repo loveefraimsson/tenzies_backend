@@ -4,20 +4,23 @@ var cors = require('cors');
 
 router.use(cors()) 
 
-
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+router.get('/gethighscore', function(req, res, next) {
+  req.app.locals.db
+  .collection('tenzies')
+  .find()
+  .toArray()
+  .then((results) => {
+      return res.json(results); 
+  });
+});
 
 
-
-router.post('/test', (req, res) => {
- 
-  //console.log(req.body);
-  //res.json({msg: 'Got a POST request'})
-  
+router.post('/register', (req, res) => {
   let user = req.body;
 
   req.app.locals.db.collection("tenzies").insertOne(user)
@@ -26,8 +29,5 @@ router.post('/test', (req, res) => {
   })
 
 }) 
-
-
-
 
 module.exports = router;
